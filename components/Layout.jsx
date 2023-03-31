@@ -1,7 +1,14 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useContext } from 'react';
+
+import { Store } from '@/context/Store';
 
 const Layout = ({ children, title }) => {
+
+    const { state, dispatch } = useContext(Store);
+    const { cart } = state;
+
     return (
         <>
             <Head>
@@ -17,13 +24,23 @@ const Layout = ({ children, title }) => {
                             RobotZ
                         </Link>
                         <div>
-                            <Link className="p-2" href="/cart">Cart</Link>
+                            <Link className="p-2" href="/cart">
+                                Cart:
+                                {cart.cartItems.length > 0 && (
+                                    <span className='ml-1 rounded-full bg-pink-500 px-2
+                                     py-1 text-xs font-bold text-white'>
+                                        {cart.cartItems.reduce((a, c) => a + c.qty, 0)}
+                                    </span>
+                                )}
+                            </Link>
                             <Link className="p-2" href="/login">Login</Link>
                         </div>
                     </nav>
                 </header>
                 <main className='container m-auto mt-4 px-4'>{children}</main>
-                <footer className='flex justify-center items-center h-10 shadow-inner'>footer</footer>
+                <footer className='flex justify-center items-center h-10 shadow-inner'>
+                    footer
+                </footer>
             </div>
         </>
     )
