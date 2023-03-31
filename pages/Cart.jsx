@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { XCircleIcon } from '@heroicons/react/outline';
@@ -15,7 +16,14 @@ const CartPage = () => {
   const { cart: { cartItems }, } = state;
 
   const removeItemHandler = (item) => {
-    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+    if (window.confirm('Are you sure you want to remove this item?')) {
+      dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+    }
+  }
+
+  const updateCartHandler = (item, amount) => {
+    const qty = +amount;
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, qty } })
   }
 
   return (
@@ -39,6 +47,7 @@ const CartPage = () => {
                       <th className='p-5'>Action</th>
                     </tr>
                   </thead>
+
                   <tbody>
                     {cartItems.map((item) => (
                       <tr key={item.slug} className='border-b'>
@@ -46,13 +55,21 @@ const CartPage = () => {
                           <Link href={`/product/${item.slug}`}
                             className='flex items-center flex-col md:flex-row'>
                             <Image src={item.img} alt={item.title}
-                              width={100} height={100} className='mr-2'/>
+                              width={100} height={100} className='mr-2' />
                             {item.title}
                           </Link>
                         </td>
                         <td className='p-5 text-right'>${item.price}</td>
-                        <td className='p-5 text-center'>{item.qty}</td>
-                        <td className='p-5 text-right'>${item.price*item.qty}</td>
+                        <td className='p-5 text-center'>
+                          {/* {item.qty} */}
+                          <select value={item.qty}
+                            onChange={(e) => updateCartHandler(item, e.target.value)}>
+                            {[...Array(item.countInStock).keys()].map(index => (
+                              <option value={index + 1} key={index}>{index + 1}</option>
+                            ))}
+                          </select>
+                        </td>
+                        <td className='p-5 text-right'>${item.price * item.qty}</td>
                         <td className='p-5 text-center'>
                           <button onClick={() => { removeItemHandler(item) }}>
                             <XCircleIcon className='h-5 w-5'></XCircleIcon>
@@ -63,6 +80,7 @@ const CartPage = () => {
                   </tbody>
                 </table>
               </div>
+
               <div className='card p-5'>
                 <ul>
                   <li>
@@ -87,4 +105,4 @@ const CartPage = () => {
   )
 }
 
-export default CartPage
+export default dynamic(() => Promise.resolve(CartPage), {ssr:false}) 
