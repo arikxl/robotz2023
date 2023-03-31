@@ -91,6 +91,8 @@ body {
 }
 
 body {
+
+
   /* color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -103,6 +105,14 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.card{
+  @apply mb-5 block rounded-lg border border-gray-200 shadow-md;
+}
+
+.prm-btn{
+  @apply rounded bg-amber-300 py-2 px-4 shadow outline-none hover:bg-amber-400 active:bg-amber-500;
 }
 
 @media (prefers-color-scheme: dark) {
