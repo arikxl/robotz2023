@@ -24,7 +24,7 @@ const Layout = ({ children, title }) => {
                             RobotZ
                         </Link>
                         <div>
-                            <Link className="p-2" href="/cart">
+                            <Link className="p-2" href="/Cart">
                                 Cart:
                                 {cart.cartItems.length > 0 && (
                                     <span className='ml-1 rounded-full bg-pink-500 px-2
