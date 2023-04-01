@@ -38,7 +38,7 @@ const Layout = ({ children, title }) => {
                                     </span>
                                 )}
                             </Link>
-                            <Link className="p-2" href="/login">Login</Link>
+                            <Link className="p-2" href="/Login">Login</Link>
                         </div>
                     </nav>
                 </header>

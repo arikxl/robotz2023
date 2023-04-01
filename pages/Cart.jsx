@@ -92,7 +92,8 @@ const CartPage = () => {
                       ${cartItems.reduce((a, c) => a + c.qty * c.price, 0)} </div>
                   </li>
                   <li>
-                    <button className='prm-btn w-full' onClick={() => router.push('/Shipping')}>
+                    <button className='prm-btn w-full' 
+                      onClick={() => router.push('Login?redirect=/Shipping')}>
                       Check Out
                     </button>
                   </li>
@@ -105,4 +106,4 @@ const CartPage = () => {
   )
 }
 
-export default dynamic(() => Promise.resolve(CartPage), {ssr:false}) 
+export default dynamic(() => Promise.resolve(CartPage), { ssr: false }) 
