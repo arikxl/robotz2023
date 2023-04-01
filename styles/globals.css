@@ -103,7 +103,7 @@ body {
 }
 
 a {
-  color: inherit;
+  /* @apply text-pink-600 hover:text-pink-800; */
   text-decoration: none;
 }
 
@@ -117,6 +117,10 @@ input, select, textarea {
 
 .prm-btn{
   @apply rounded bg-amber-300 py-2 px-4 shadow outline-none hover:bg-amber-400 active:bg-amber-500;
+}
+
+.dropdown-link{
+  @apply flex p-2 hover:bg-gray-200;
 }
 
 @media (prefers-color-scheme: dark) {
