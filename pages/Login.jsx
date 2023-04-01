@@ -1,14 +1,38 @@
-import Layout from '@/components/Layout'
 import Link from 'next/link'
-import React from 'react';
+import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { signIn, useSession } from 'next-auth/react';
+
+import Layout from '@/components/Layout'
+import { getError } from '@/utils/error';
 
 const LoginPage = () => {
 
+  const router = useRouter();
+  const { redirect } = router.query;
+  const { data: session } = useSession();
+
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const submitHandler = ({ email, password }) => {
-    console.log(email, password)
+  useEffect(() => {
+    if (session?.user) {
+      router.push(redirect || '/')
+    }
+  },[router, session, redirect])
+
+  const submitHandler = async ({ email, password }) => {
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password
+      })
+      if (result.error) toast.error(result.error)
+    } catch (error) {
+      toast.error(getError(error))
+    }
 
   }
 
@@ -36,7 +60,8 @@ const LoginPage = () => {
               minLength: { value: 8, message: 'Password need to be at least 8 characters long' }
             })}
           />
-          {errors.password && (<div className='text-red-500'>{errors.password.message}</div>)}
+          {errors.password &&
+            (<div className='text-red-500'>{errors.password.message}</div>)}
 
         </div>
         <div className='mb-4'>
