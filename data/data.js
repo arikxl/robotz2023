@@ -1,5 +1,20 @@
-const data ={ 
+import bcrypt from "bcryptjs";
 
+const data ={ 
+    users: [
+        {
+            name: 'Arik',
+            email: 'arikxl@gmail.com',
+            password: bcrypt.hashSync('123456'),
+            isAdmin: true
+        },
+        {
+            name: 'Loola',
+            email: 'dy1115@gmail.com',
+            password: bcrypt.hashSync('123456'),
+            isAdmin: false
+        },
+    ],
     products: [
         {
             title: 'Pearl Robot',
