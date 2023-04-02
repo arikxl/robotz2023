@@ -53,6 +53,10 @@ input, select, textarea {
   @apply rounded bg-amber-300 py-2 px-4 shadow outline-none hover:bg-amber-400 active:bg-amber-500;
 }
 
+.dft-btn{
+  @apply rounded bg-gray-100 py-2 px-4 shadow outline-none hover:bg-gray-400 active:bg-gray-300;
+}
+
 .dropdown-link{
   @apply flex p-2 hover:bg-gray-200;
 }
