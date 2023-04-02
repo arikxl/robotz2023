@@ -7,6 +7,8 @@ import { XCircleIcon } from '@heroicons/react/outline';
 
 import { Store } from '@/context/Store';
 import Layout from '@/components/Layout';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const CartPage = () => {
@@ -21,8 +23,13 @@ const CartPage = () => {
     }
   }
 
-  const updateCartHandler = (item, amount) => {
+  const updateCartHandler = async (item, amount) => {
     const qty = +amount;
+    const { data } = await axios.get(`api/products/${item._id}`);
+    if (data.countInStock < qty) {
+     return  toast.error('Sorry, Product is out of stock')
+
+    }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, qty } })
   }
 

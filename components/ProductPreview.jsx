@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 
-const ProductPreview = ({ product }) => {
+const ProductPreview = ({ product, addToCartHandler }) => {
     return (
         <div className="card ">
             <Link href={`/product/${product.slug}`}>
@@ -12,7 +12,8 @@ const ProductPreview = ({ product }) => {
                 <h2 className='text-lg '>{product.title}</h2>
                 <p className='mb-2'>{product.brand}</p>
                 <p className=''>${product.price}</p>
-                <button className='prm-btn' type='button'>
+                <button className='prm-btn' type='button'
+                    onClick={()=>addToCartHandler(product)}>
                     Add to cart
                 </button>
             </div>

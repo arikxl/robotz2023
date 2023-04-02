@@ -1,33 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
+import axios from 'axios';
 import Image from 'next/image';
-import { useRouter } from 'next/router'
+import { toast } from 'react-toastify';
 import { useContext } from 'react';
 
-import data from '@/data/data';
+import db from '@/db/db';
 import Layout from '@/components/Layout'
+import Product from '@/models/Product';
 import { Store } from '../../context/Store';
 
 
-const ProductDetails = () => {
+const ProductDetails = (props) => {
 
     const { state, dispatch } = useContext(Store);
+    const { product } = props
 
-    const { query } = useRouter();
-    const { slug } = query;
-    const product = data.products.find(x => x.slug === slug)
-
-    const addToCartHandler = () => {
+    const addToCartHandler = async () => {
         const existingItem = state.cart.cartItems.find((x) => x.slug === product.slug);
-        const qty = existingItem ? existingItem.qty + 1 : 1
-        if (product.countInStock < qty) {
-            alert('Sorry, Product is out of stock')
-            return
+        const qty = existingItem ? existingItem.qty + 1 : 1;
+        const { data } = await axios.get(`/api/products/${product._id}`);
+
+        if (data.countInStock < qty) {
+            return toast.error('Sorry, Product is out of stock')
         }
         dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, qty } });
     }
 
-    if (!product) return 'No Product found!';
+    if (!product) return <Layout title='Product not found!'>No Product found!</Layout>;
 
     return (
         <Layout title={product.title}>
@@ -74,3 +74,18 @@ const ProductDetails = () => {
 }
 
 export default ProductDetails
+
+
+export async function getServerSideProps(context) {
+    const { params } = context;
+    const { slug } = params;
+
+    await db.connect();
+    const product = await Product.findOne({ slug }).lean();
+    await db.disconnect();
+    return {
+        props: {
+            product: product ? db.convertDocToObj(product) : null,
+        }
+    }
+}
