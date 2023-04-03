@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import axios from 'axios';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useContext } from 'react';
@@ -7,7 +8,6 @@ import { XCircleIcon } from '@heroicons/react/outline';
 
 import { Store } from '@/context/Store';
 import Layout from '@/components/Layout';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 
 

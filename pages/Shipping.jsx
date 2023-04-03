@@ -48,7 +48,7 @@ const ShippingPage = () => {
         <h1 className='mb-4 text-xl'>Shipping Address</h1>
         <div className='mb-4'>
           <label htmlFor="fullName">Full Name</label>
-          <input type="text" className='w-full' id='fullName' autofocus
+          <input type="text" className='w-full' id='fullName' autoFocus
             {...register('fullName', { required: 'Please enter full name' })}
           />
           {errors.fullName && <div className='text-red-500' >{errors.fullName.message}</div>}
