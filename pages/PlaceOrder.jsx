@@ -76,8 +76,8 @@ const PlaceOrder = () => {
                                     <h2 className='mb-2 text-lg'>Shipping Address</h2>
                                     <div>
                                         {shippingAddress.fullName}. {shippingAddress.address},{' '}
-                                        {shippingAddress.city}, {shippingAddress.zipCode},{' '}
-                                        {shippingAddress.country}
+                                        {shippingAddress.city}, {shippingAddress.country},{' '}
+                                        {shippingAddress.zipCode}
                                     </div>
                                     <div> <Link href='/Shipping' className='underline text-indigo-500'>Edit</Link></div>
                                 </div>
