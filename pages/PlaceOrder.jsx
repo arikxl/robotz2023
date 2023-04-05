@@ -6,9 +6,9 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 
-import Layout from '@/components/Layout'
 import { Store } from '@/context/Store';
 import { getError } from '@/utils/error';
+import Layout from '@/components/Layout'
 import CheckoutWizard from '@/components/CheckoutWizard'
 
 const PlaceOrder = () => {

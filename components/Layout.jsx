@@ -26,6 +26,7 @@ const Layout = ({ children, title }) => {
         Cookies.remove('cart');
         dispatch({ type: 'CART_RESET' });
         signOut({ callbackUrl: '/Login' });
+        // location.reload();
     }
 
     return (
@@ -74,9 +75,10 @@ const Layout = ({ children, title }) => {
                                                 </DropdownLink>
                                             </Menu.Item>
                                             <Menu.Item>
-                                                <DropdownLink className='dropdown-link' href='/#' onClick={logoutHandler}>
+                                                <a className='dropdown-link' href='#'
+                                                    onClick={logoutHandler}>
                                                     Logout
-                                                </DropdownLink>
+                                                </a>
                                             </Menu.Item>
                                         </Menu.Items>
                                     </Menu>)

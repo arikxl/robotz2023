@@ -1,9 +1,9 @@
-import Layout from '@/components/Layout'
-import { Store } from '@/context/Store';
-import { getError } from '@/utils/error';
 import axios from 'axios';
-import Image from 'next/image';
 import Link from 'next/link';
+import Image from 'next/image';
+
+import Layout from '@/components/Layout'
+import { getError } from '@/utils/error';
 import { useRouter } from 'next/router'
 
 import React, { useContext, useEffect, useReducer } from 'react'
@@ -26,10 +26,6 @@ const OrderPage = () => {
 
     const { query } = useRouter();
     const orderId = query.id;
-
-    // const { state } = useContext(Store);
-    // const { cart } = state;
-    // const {  shippingAddress } = cart;
 
     const [{ loading, error, order }, dispatch] = useReducer(
         reducer,
@@ -57,8 +53,6 @@ const OrderPage = () => {
 
     const { paymentMethod, orderItems, itemsPrice, taxPrice, isPaid,
         shippingPrice, paidAt, isDelivered, deliveredAt, shippingAddress } = order;
-    // const { fullName } = shippingAddress;
-    // console.log('fullName:', fullName)
 
     return (
 
@@ -153,12 +147,6 @@ const OrderPage = () => {
                                                 <div>${itemsPrice+shippingPrice+taxPrice}</div>
                                             </div>
                                         </li>
-                                        {/* <li>
-                                            <button className='prm-btn' disabled={loading}
-                                                onClick={PlaceOrderHandler}>
-                                                {loading ? 'LOADING... ' : 'Place Order'}
-                                            </button>
-                                        </li> */}
                                     </ul>
                                 </div>
                             </div>
