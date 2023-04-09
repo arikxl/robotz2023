@@ -6,6 +6,7 @@ import Order from "@/models/Order";
 const handler = async (req, res) => {
 
     const session = await getSession({req});
+
     if (!session) {
         return res.status(401).send('Signin required')
     }
@@ -19,7 +20,6 @@ const handler = async (req, res) => {
 
     const order = await newOrder.save();
     res.status(201).send(order);
-    // await db.disconnect();
 }
 
 export default handler;

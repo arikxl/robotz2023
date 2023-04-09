@@ -38,7 +38,7 @@ export default NextAuth({
                         isAdmin: user.isAdmin
                     }
                 }
-                throw new Error('Invalid user or password')
+                throw new Error('Invalid email or password')
             }
         })
     ]

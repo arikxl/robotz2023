@@ -1,3 +1,5 @@
+// /api/orders/:id
+
 import { getSession } from "next-auth/react";
 
 import db from "@/db/db";

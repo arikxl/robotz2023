@@ -20,7 +20,7 @@ const LoginPage = () => {
     if (session?.user) {
       router.push(redirect || '/')
     }
-  },[router, session, redirect])
+  }, [router, session, redirect])
 
   const submitHandler = async ({ email, password }) => {
     try {
@@ -54,7 +54,7 @@ const LoginPage = () => {
         </div>
         <div className='mb-4'>
           <label htmlFor="password">Password</label>
-          <input type="password" className='w-full' id='password' 
+          <input type="password" className='w-full' id='password'
             {...register('password', {
               required: 'Please enter your password',
               minLength: { value: 8, message: 'Password need to be at least 8 characters long' }
@@ -68,8 +68,10 @@ const LoginPage = () => {
           <button className='prm-btn'>Login</button>
         </div>
         <div className='mb-4'>
-          Don't have an account? &nbsp;
-          <Link href={`/register?redirect=${redirect || '/Shipping'}`} className='underline'>Register here.</Link>
+          Don&apos;t have an account? &nbsp;
+          <Link href={`/register?redirect=${redirect || '/Shipping'}`}
+            className='underline'>Register here.
+          </Link>
         </div>
       </form>
     </Layout>

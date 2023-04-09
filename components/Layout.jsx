@@ -11,9 +11,11 @@ import DropdownLink from './DropdownLink';
 import { Store } from '@/context/Store';
 import { signOut, useSession } from 'next-auth/react';
 
+
 const Layout = ({ children, title }) => {
 
     const { status, data: session } = useSession();
+
     const { state, dispatch } = useContext(Store);
     const { cart } = state;
     const [cartItemsCount, setCartItemsCount] = useState(0);
@@ -58,10 +60,12 @@ const Layout = ({ children, title }) => {
                             </Link>
                             {status === 'loading'
                                 ? ('LOADING...')
-                                : session?.user
+                                :
+                                // ('AAA')
+                                session?.user
                                     ? (<Menu as="div" className="relative inline-block">
                                         <Menu.Button className='text-amber-700'>
-                                            {session.user.name}
+                                            {session?.user?.name}
                                         </Menu.Button>
                                         <Menu.Items className='bg-white absolute right-0 w-56 origin-top-right shadow-lg'>
                                             <Menu.Item>

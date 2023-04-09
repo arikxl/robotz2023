@@ -1,9 +1,6 @@
-import { getSession } from "next-auth/react";
 import bcryptjs from "bcryptjs";
 
-
 import db from "@/db/db";
-import Order from "@/models/Order";
 import User from "@/models/User";
 
 const handler = async (req, res) => {

@@ -38,7 +38,7 @@ function reducer(state, action) {
                     shippingAddress: { location: {} },
                     paymentMethod: '',
                 },
-        }
+            }
         case 'CART_CLEAR_ITEMS':
             return {
                 ...state,
