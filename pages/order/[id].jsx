@@ -1,13 +1,14 @@
 import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
+import React, { useContext, useEffect, useReducer } from 'react'
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 
 import Layout from '@/components/Layout'
 import { getError } from '@/utils/error';
 import { useRouter } from 'next/router'
 
-import React, { useContext, useEffect, useReducer } from 'react'
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 
 function reducer(state, action) {
     switch (action.type) {
@@ -17,11 +18,18 @@ function reducer(state, action) {
             return { ...state, loading: false, order: action.payload, error: '' };
         case 'FETCH_FAIL':
             return { ...state, loading: false, error: action.payload };
+        case 'PAY_REQUEST':
+            return { ...state, loadingPay: true };
+        case 'PAY_SUCCESS':
+            return { ...state, loadingPay: false, successPay: true };
+        case 'PAY_FAIL':
+            return { ...state, loadingPay: false, errorPay: action.payload };
+        case 'PAY_RESET':
+            return { ...state, loadingPay: false, successPay: false, errorPay: '' };
         default:
             state;
     }
-}
-
+};
 
 const OrderPage = () => {
 
@@ -30,7 +38,7 @@ const OrderPage = () => {
 
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
-    const [{ loading, error, order }, dispatch] = useReducer(
+    const [{ loading, error, order, successPay, loadingPay }, dispatch] = useReducer(
         reducer,
         {
             loading: true,
@@ -38,6 +46,10 @@ const OrderPage = () => {
             error: ''
         }
     );
+
+    const { paymentMethod, orderItems, itemsPrice, taxPrice, isPaid, totalPrice,
+        shippingPrice, paidAt, isDelivered, deliveredAt, shippingAddress
+    } = order;
 
     useEffect(() => {
         const fetchOrder = async () => {
@@ -49,8 +61,11 @@ const OrderPage = () => {
                 dispatch({ type: 'FETCH_FAIL', payload: getError(error) })
             }
         }
-        if (!order._id || (order._id && order._id !== orderId)) {
+        if (!order._id || successPay || (order._id && order._id !== orderId)) {
             fetchOrder();
+            if (successPay) {
+                dispatch({ type: 'PAY_RESET' });
+            }
         } else {
             const loadPaypalScript = async () => {
                 const { data: clientId } = await axios.get('/api/keys/paypal');
@@ -65,10 +80,39 @@ const OrderPage = () => {
             };
             loadPaypalScript();
         }
-    }, [orderId, order, paypalDispatch]);
+    }, [orderId, order, paypalDispatch, successPay]);
 
-    const { paymentMethod, orderItems, itemsPrice, taxPrice, isPaid,
-        shippingPrice, paidAt, isDelivered, deliveredAt, shippingAddress } = order;
+
+    function createOrder(data, actions) {
+        return actions.order
+            .create({
+                purchase_units: [{ amount: { value: totalPrice } }]
+            }).then((orderId) => {
+                return orderId
+            })
+    }
+
+    function onApprove(data, actions) {
+        return actions.order.capture()
+            .then(async function (details) {
+                try {
+                    dispatch({ type: 'PAY_REQUEST' });
+                    const { data } = await axios.put(
+                        `/api/orders/${order._id}/pay`,
+                        details
+                    );
+                    dispatch({ type: 'PAY_SUCCESS', payload: data });
+                    toast.success('Order is paid successfully')
+                } catch (error) {
+                    dispatch({ type: 'PAY_FAIL', payload: getError(error) });
+                    toast.error(getError(error));
+                }
+            })
+    }
+
+    function onError(error) {
+        toast.error(getError(error));
+    }
 
     return (
 
@@ -165,7 +209,7 @@ const OrderPage = () => {
                                         </li>
                                         {!isPaid && (
                                             <li>
-                                                {isPanding
+                                                {isPending
                                                     ? (<div>LOADING...</div>)
                                                     : (
                                                         <div className='w-full'>
@@ -177,6 +221,7 @@ const OrderPage = () => {
                                                         </div>
                                                     )
                                                 }
+                                                {loadingPay && (<div>LOADING...</div>)}
                                             </li>
                                         )}
                                     </ul>
