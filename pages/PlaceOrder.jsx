@@ -10,6 +10,7 @@ import { Store } from '@/context/Store';
 import { getError } from '@/utils/error';
 import Layout from '@/components/Layout'
 import CheckoutWizard from '@/components/CheckoutWizard'
+import { useSession } from 'next-auth/react';
 
 const PlaceOrder = () => {
 
@@ -33,6 +34,9 @@ const PlaceOrder = () => {
         }
     }, [paymentMethod, router])
 
+    const {  data: session } = useSession();
+    
+    
     const PlaceOrderHandler = async () => {
         try {
             setLoading(true);

@@ -29,6 +29,7 @@ const Layout = ({ children, title }) => {
         dispatch({ type: 'CART_RESET' });
         signOut({ callbackUrl: '/Login' });
         // location.reload();
+
     }
 
     return (

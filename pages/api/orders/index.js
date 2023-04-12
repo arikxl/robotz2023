@@ -1,17 +1,16 @@
-import { getSession } from "next-auth/react";
+import { getToken } from 'next-auth/jwt';
 
 import db from "@/db/db";
 import Order from "@/models/Order";
 
-const handler = async (req, res) => {
+const Handler = async (req, res) => {
 
-    const session = await getSession({req});
 
-    if (!session) {
-        return res.status(401).send('Signin required')
+    const user = await getToken({ req });
+    if (!user) {
+        return res.status(401).send('signin required');
     }
 
-    const { user } = session;
     await db.connect();
     const newOrder = new Order({
         ...req.body,
@@ -22,4 +21,4 @@ const handler = async (req, res) => {
     res.status(201).send(order);
 }
 
-export default handler;
+export default Handler;

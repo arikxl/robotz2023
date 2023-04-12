@@ -21,7 +21,7 @@ const LoginPage = () => {
       router.push(redirect || '/')
     }
   }, [router, session, redirect])
-
+  
   const submitHandler = async ({ email, password }) => {
     try {
       const result = await signIn('credentials', {
