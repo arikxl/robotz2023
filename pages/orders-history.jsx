@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react';
+import Link from 'next/link';
 import axios from 'axios';
 
+import Layout from "@/components/Layout";
 import { getError } from '../utils/error';
-import Layout from "@/components/Layout"
 
 function reducer(state, action) {
   switch (action.type) {
@@ -27,22 +28,22 @@ const OrdersHistory = () => {
   });
 
   useEffect(() => {
-    const fetchOrders = async() => {
+    const fetchOrders = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get('/api/orders/history');
-        dispatch({ type: 'FETCH_SUCCESS', payload: data})
+        dispatch({ type: 'FETCH_SUCCESS', payload: data })
       } catch (error) {
-        dispatch({type: 'FETCH_FAIL', payload:getError(error)})
+        dispatch({ type: 'FETCH_FAIL', payload: getError(error) })
       }
     }
     fetchOrders();
   }, [])
-  
+
 
   return (
     <Layout title="Orders History">
-      <h1>Orders History</h1>
+      <h1 className='mb-4 text-xl'>Orders History</h1>
       {loading
         ? (<div>LOADING...</div>)
         : error
@@ -63,7 +64,22 @@ const OrdersHistory = () => {
                 <tbody>
                   {orders.map((order) => (
                     <tr key={order._id} className='border-b'>
-                        
+                      <td className='px-5 '>{order._id.slice(-5)}</td>
+                      <td className='px-5 '>{order.createdAt.substring(0, 10)}</td>
+                      <td className='px-5 '>${order.totalPrice}</td>
+                      <td className='px-5 '>
+                        {order.isPaid
+                          ? `${order.paidAt.substring(0, 10)}`
+                          : 'Not paid'}
+                      </td>
+                      <td className='px-5 '>
+                        {order.isDelivered
+                          ? `${order.deliveredAt.substring(0,10)}`
+                          : 'Not delivered'}
+                      </td>
+                      <td className='px-5 '>
+                        <Link href={`/order/${order._id}`} passHref className='text-blue-500 underline'>Details</Link>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -76,3 +92,5 @@ const OrdersHistory = () => {
 }
 
 export default OrdersHistory
+
+OrdersHistory.auth = true;

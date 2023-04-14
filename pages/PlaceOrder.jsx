@@ -1,16 +1,16 @@
 import Link from 'next/link';
-import axios from 'axios';
 import Image from 'next/image';
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useState } from 'react';
 
+import Layout from '@/components/Layout';
 import { Store } from '@/context/Store';
 import { getError } from '@/utils/error';
-import Layout from '@/components/Layout'
-import CheckoutWizard from '@/components/CheckoutWizard'
-import { useSession } from 'next-auth/react';
+import CheckoutWizard from '@/components/CheckoutWizard';
 
 const PlaceOrder = () => {
 
