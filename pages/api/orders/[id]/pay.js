@@ -1,10 +1,11 @@
 import db from '@/db/db';
 import Order from '@/models/Order';
-import { getSession } from 'next-auth/react';
+import { getToken } from 'next-auth/react';
+getToken
 
 const handler = async (req, res) => {
-    const session = await getSession({req});
-    if (!session) {
+    const user = await getToken({req});
+    if (!user) {
         return res.status(401).send('Signin required');
     }
 
