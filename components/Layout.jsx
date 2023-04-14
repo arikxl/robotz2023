@@ -1,16 +1,14 @@
-import Head from 'next/head'
-import Link from 'next/link'
+import Link from 'next/link';
+import Head from 'next/head';
 import Cookies from 'js-cookie';
 import 'react-toastify/dist/ReactToastify.css';
 import { Menu } from '@headlessui/react';
 import { ToastContainer } from 'react-toastify';
 import { useContext, useEffect, useState } from 'react';
 
-
-import DropdownLink from './DropdownLink';
 import { Store } from '@/context/Store';
 import { signOut, useSession } from 'next-auth/react';
-
+import DropdownLink from './DropdownLink';
 
 const Layout = ({ children, title }) => {
 
@@ -28,8 +26,6 @@ const Layout = ({ children, title }) => {
         Cookies.remove('cart');
         dispatch({ type: 'CART_RESET' });
         signOut({ callbackUrl: '/Login' });
-        // location.reload();
-
     }
 
     return (
@@ -79,6 +75,16 @@ const Layout = ({ children, title }) => {
                                                     Orders History
                                                 </DropdownLink>
                                             </Menu.Item>
+                                            {
+                                                session?.user.isAdmin && (
+                                                    <Menu.Item>
+                                                        <a className='dropdown-link' href='/admin'>
+                                                            Admin Dashboard
+                                                        </a>
+                                                    </Menu.Item>
+                                                )
+                                            }
+
                                             <Menu.Item>
                                                 <a className='dropdown-link' href='#'
                                                     onClick={logoutHandler}>
