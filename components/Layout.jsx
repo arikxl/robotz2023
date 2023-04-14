@@ -75,7 +75,7 @@ const Layout = ({ children, title }) => {
                                                 </DropdownLink>
                                             </Menu.Item>
                                             <Menu.Item>
-                                                <DropdownLink className='dropdown-link' href='/order-history'>
+                                                <DropdownLink className='dropdown-link' href='/orders-history'>
                                                     Orders History
                                                 </DropdownLink>
                                             </Menu.Item>
